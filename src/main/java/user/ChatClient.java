@@ -3,6 +3,7 @@ package user;
 import thread.ReadThread;
 import thread.WriteThread;
 
+import javax.xml.soap.Text;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -15,29 +16,14 @@ public class ChatClient {
     private int port;
     private String userName;
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
-    }
 
-    public void setPort(int port) {
-        this.port = port;
-    }
+
 
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public String getUserName() {
-        return userName;
-    }
 
-    public int getPort() {
-        return port;
-    }
-
-    public String getHostName() {
-        return hostName;
-    }
 
     public ChatClient(String hostName, int port) {
         this.hostName = hostName;
@@ -47,10 +33,15 @@ public class ChatClient {
     public void execute() {
         try {
             Socket socket = new Socket(hostName, port);
-
+            TextDemo.setSocket(socket);
             System.out.println("Connected to sex dates chat server");
+
+            new Thread(new Runnable() {
+                public void run() {
+                    TextDemo.createAndShowGUI();
+                }
+            }).start();
             new ReadThread(socket, this).start();
-            new WriteThread(socket, this).start();
 
         } catch (UnknownHostException e) {
             System.out.println("Server not found : " + e.getMessage());
@@ -62,9 +53,9 @@ public class ChatClient {
     }
 
     public static void main(String[] args) {
-        if(args.length < 2) return;
-        String hostname = args[0];
-        int port = Integer.parseInt(args[1]);
+//        if(args.length < 2) return;
+        String hostname = "10.141.106.151";
+        int port = 7;
         ChatClient client = new ChatClient(hostname, port);
         client.execute();
 

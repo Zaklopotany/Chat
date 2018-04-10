@@ -1,7 +1,9 @@
 package thread;
 
 import user.ChatClient;
+import user.TextDemo;
 
+import javax.xml.soap.Text;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,10 +17,12 @@ public class ReadThread extends Thread {
     private BufferedReader reader;
     private Socket socket;
     private ChatClient client;
+    private TextDemo textDemo;
 
     public ReadThread(Socket socket, ChatClient chatClient) {
         this.socket = socket;
-        this.client = client;
+        this.client = chatClient;
+        this.textDemo = TextDemo.getTextDemo();
 
         try {
             InputStream inputStream = socket.getInputStream();
@@ -34,12 +38,7 @@ public class ReadThread extends Thread {
         while (true) {
             try {
                 String response = reader.readLine();
-                System.out.println("\n" +response);
-
-                if (client.getUserName() != null) {
-                    System.out.println("[" + client.getUserName() + "]: ");
-                }
-
+                textDemo.addToArea(response + "\n");
 
             } catch (IOException e) {
                 System.out.println("Error reading from server: " + e.getMessage());
