@@ -35,7 +35,6 @@ public class ChatClient {
             Socket socket = new Socket(hostName, port);
             TextDemo.setSocket(socket);
             System.out.println("Connected to sex dates chat server");
-
             new Thread(new Runnable() {
                 public void run() {
                     TextDemo.createAndShowGUI();
@@ -54,7 +53,7 @@ public class ChatClient {
 
     public static void main(String[] args) {
 //        if(args.length < 2) return;
-        String hostname = "10.141.106.151";
+        String hostname = "10.141.111.61";
         int port = 7;
         ChatClient client = new ChatClient(hostname, port);
         client.execute();
